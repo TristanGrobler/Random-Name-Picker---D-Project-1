@@ -31,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   // This is the item to control text in textfield
   TextEditingController txtEditController = TextEditingController();
 
+  //Method to create the list for the spinner
   List<FortuneItem> getWheelItems() {
     List<FortuneItem> _list = [
       FortuneItem(child: Text('Enter Data')),

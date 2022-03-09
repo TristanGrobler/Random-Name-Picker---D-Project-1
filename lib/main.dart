@@ -6,7 +6,12 @@ import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 
 void main() {
   runApp(
-    const MaterialApp(
+    MaterialApp(
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Colors.orange,
+        ),
+
       home: HomePage(),
     ),
   );
@@ -40,7 +45,7 @@ class _HomePageState extends State<HomePage> {
     if (stringList.isNotEmpty && stringList.length > 1) {
       _list = [];
       for (var i = 0; i < stringList.length; i++) {
-        _list.add(FortuneItem(child: Text(stringList[i])));
+        _list.add(FortuneItem(child: Text(stringList[i],style: TextStyle(),)));
       }
     }
 
@@ -57,47 +62,49 @@ class _HomePageState extends State<HomePage> {
       //This is the body of the app, so everything below the app bar.
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // This widget shows the text at the top of the body.
-            const Text('Items List:'),
-            // This widget shows the user input field.
-            Container(
-              color: Colors.blue.withOpacity(0.2),
-              child: TextFormField(
-                controller: txtEditController,
-                maxLines: 1,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // This widget shows the text at the top of the body.
+              const Text('Items List:'),
+              // This widget shows the user input field.
+              Container(
+                color: Colors.blue.withOpacity(0.2),
+                child: TextFormField(
+                  controller: txtEditController,
+                  maxLines: 1,
+                ),
               ),
-            ),
-            TextButton.icon(
+              TextButton.icon(
+                  onPressed: () {
+                    stringList.add(txtEditController.text);
+                    txtEditController.clear();
+                    setState(() {});
+                  },
+                  icon: Icon(Icons.add),
+                  label: Text('Add Item')),
+              SizedBox(
+                height: 100,
+              ),
+              Container(
+                height: 200,
+                child: FortuneWheel(
+                  selected: controller.stream,
+                  items: getWheelItems(),
+                ),
+              ),
+              // This widget shows the button to run randomly spin the wheel.
+              TextButton(
                 onPressed: () {
-                  stringList.add(txtEditController.text);
-                  txtEditController.clear();
-                  setState(() {});
+                  controller.add(Random().nextInt(100));
                 },
-                icon: Icon(Icons.add),
-                label: Text('Add Item')),
-            SizedBox(
-              height: 100,
-            ),
-            Container(
-              height: 200,
-              child: FortuneWheel(
-                selected: controller.stream,
-                items: getWheelItems(),
+                child: const Icon(Icons.refresh_outlined),
               ),
-            ),
-            // This widget shows the button to run randomly spin the wheel.
-            TextButton(
-              onPressed: () {
-                controller.add(Random().nextInt(16));
-              },
-              child: const Icon(Icons.refresh_outlined),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

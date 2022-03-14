@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   //This is the variable that holds the list of items for the spinner.
   List<String> stringList = [];
   //This is the stream controller for the spinning wheel.
-  StreamController<int> controller = StreamController<int>();
+  StreamController<int> controller = StreamController<int>.broadcast();
   // This is the item to control text in textfield
   TextEditingController txtEditController = TextEditingController();
 
@@ -93,7 +93,8 @@ class _HomePageState extends State<HomePage> {
                 height: 100,
               ),
               Container(
-                height: 200,
+                height: MediaQuery.of(context).size.width,
+                width: MediaQuery.of(context).size.width,
                 child: FortuneWheel(
                   selected: controller.stream,
                   items: getWheelItems(),
@@ -103,12 +104,23 @@ class _HomePageState extends State<HomePage> {
               // This widget shows the button to run randomly spin the wheel.
               TextButton(
                 onPressed: () async {
-                  controller.add(Random().nextInt(100));
+                  int _itemInt = Random().nextInt(stringList.length);
+                  controller.add(_itemInt);
                   await Future.delayed(Duration(seconds: 2));
-                  const snackBar = SnackBar(
-                    content: Text('Yay! A SnackBar!'),
+                  result = stringList[_itemInt];
+                  showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Congratulations'),
+                      content: Text('$result is the winner!!!'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'OK'),
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
                   );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
                 child: const Icon(Icons.refresh_outlined),
               ),

@@ -10,8 +10,7 @@ void main() {
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.orange,
-        ),
-
+      ),
       home: HomePage(),
     ),
   );
@@ -45,7 +44,11 @@ class _HomePageState extends State<HomePage> {
     if (stringList.isNotEmpty && stringList.length > 1) {
       _list = [];
       for (var i = 0; i < stringList.length; i++) {
-        _list.add(FortuneItem(child: Text(stringList[i],style: TextStyle(),)));
+        _list.add(FortuneItem(
+            child: Text(
+          stringList[i],
+          style: TextStyle(),
+        )));
       }
     }
 
@@ -94,12 +97,18 @@ class _HomePageState extends State<HomePage> {
                 child: FortuneWheel(
                   selected: controller.stream,
                   items: getWheelItems(),
+                  duration: Duration(seconds: 2),
                 ),
               ),
               // This widget shows the button to run randomly spin the wheel.
               TextButton(
-                onPressed: () {
+                onPressed: () async {
                   controller.add(Random().nextInt(100));
+                  await Future.delayed(Duration(seconds: 2));
+                  const snackBar = SnackBar(
+                    content: Text('Yay! A SnackBar!'),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
                 child: const Icon(Icons.refresh_outlined),
               ),

@@ -60,7 +60,22 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       //This is the top bar that has the title of the app in it.
       appBar: AppBar(
-        title: const Text('Random Item Picker'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Random Item Picker'),
+            GestureDetector(
+                onTap: () {
+                  result = '';
+                  itemText = '';
+                  stringList = [];
+                  txtEditController.clear();
+                  getWheelItems();
+                  setState(() {});
+                },
+                child: Icon(Icons.refresh)),
+          ],
+        ),
       ),
       //This is the body of the app, so everything below the app bar.
       body: Padding(

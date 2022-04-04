@@ -8,8 +8,8 @@ void main() {
   runApp(
     MaterialApp(
       theme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: Colors.orange,
+        brightness: Brightness.light,
+        primaryColor: Colors.greenAccent,
       ),
       home: HomePage(),
     ),
@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
   //This is the variable that holds the string of the input field.
   String itemText = '';
   //This is the variable that holds the list of items for the spinner.
-  List<String> stringList = [];
+  List<String> stringList = ['Zoe', 'Max', 'Alexander', 'Ryan'];
   //This is the stream controller for the spinning wheel.
   StreamController<int> controller = StreamController<int>.broadcast();
   // This is the item to control text in textfield
@@ -58,8 +58,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade50,
       //This is the top bar that has the title of the app in it.
       appBar: AppBar(
+        backgroundColor: Colors.deepOrange,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -105,10 +107,10 @@ class _HomePageState extends State<HomePage> {
                   icon: Icon(Icons.add),
                   label: Text('Add Item')),
               SizedBox(
-                height: 100,
+                height: 50,
               ),
               Container(
-                height: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 2,
                 width: MediaQuery.of(context).size.width,
                 child: FortuneWheel(
                   selected: controller.stream,
